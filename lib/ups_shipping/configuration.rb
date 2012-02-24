@@ -1,6 +1,4 @@
 require 'yaml'
-require 'pathname'
-require 'tmpdir'
 
 module UpsShipping
   module Configuration
