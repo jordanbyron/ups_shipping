@@ -10,10 +10,11 @@ Gem::Specification.new do |s|
   s.homepage    = "http://github.com/rubiety/ups_shipping"
   s.summary     = "A library for using the UPS Shipping XML API."
   s.description = "Provides a Ruby abstraction for the UPS Shipping Services API, which is XML based."
-  
-  s.files        = Dir["{lib,spec}/**/*", "[A-Z]*", "init.rb"]
+
+  s.files        = Dir["{lib}/**/*", "README.rdoc", "LICENSE", "Rakefile"]
+  s.test_files   = Dir["test/**/*"]
   s.require_path = "lib"
-  
-  s.rubyforge_project = s.name
-  s.required_rubygems_version = ">= 1.3.4"
+
+  s.add_dependency "builder", '>= 3.0.0'
+  s.add_dependency "nokogiri", '>= 1.5.0'
 end

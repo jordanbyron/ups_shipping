@@ -1,0 +1,20 @@
+account_number: Six Digit UPS Account Number
+base_url: https://wwwcie.ups.com/ups.app/xml/
+access_license_number: Developer Access Key
+user_id: ups.com User ID
+password: seekret
+shipper:
+  name: Jordan Byron
+  phone_number: 203-555-5555
+  address1: 123 Apple Street
+  city: New Haven
+  state: CT
+  postal_code: 06510
+ship_from:
+  company_name: UPS Shipping Inc.
+  name: Jordan Byron
+  phone_number: 203-555-5555
+  address1: 123 Apple Street
+  city: New Haven
+  state: CT
+  postal_code: 06510

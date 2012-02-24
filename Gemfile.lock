@@ -1,0 +1,18 @@
+PATH
+  remote: .
+  specs:
+    ups_shipping (0.0.1)
+      builder (>= 3.0.0)
+      nokogiri (>= 1.5.0)
+
+GEM
+  remote: http://rubygems.org/
+  specs:
+    builder (3.0.0)
+    nokogiri (1.5.0)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  ups_shipping!
