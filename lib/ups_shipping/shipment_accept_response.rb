@@ -1,55 +1,52 @@
 module UpsShipping
   class ShipmentAcceptResponse < Response
-    attr_accessor :transportation_charges
-    attr_accessor :service_options_charges
-    attr_accessor :total_charges
-    attr_accessor :billing_weight
-    attr_accessor :billing_weight_unit
-    attr_accessor :high_value_report
-    attr_accessor :high_value_report_format
-
-    attr_accessor :packages
+    attr_accessor :transportation_charges, :service_options_charges,
+      :total_charges, :billing_weight, :billing_weight_unit, :high_value_report,
+      :high_value_report_format, :packages
 
     def initialize(body, request = nil)
       self.packages = []
       super
     end
 
-    # TODO Use Nokogiri
     def parse_response
-      data = Nokogiri::XML.parse(body).at("shipment_accept_response")
+      self.xml = Nokogiri::XML.parse(body)
 
-      self.status_code = data.at('response_status_code').content
-      self.status_description = data['response']['response_status_description']
+      self.status_code        = attr('ResponseStatusCode')
+      self.status_description = attr('ResponseStatusDescription')
 
       if success?
-        self.transportation_charges = data['shipment_results']['shipment_charges']['transportation_charges']['monetary_value']
-        self.service_options_charges = data['shipment_results']['shipment_charges']['service_options_charges']['monetary_value']
-        self.total_charges = data['shipment_results']['shipment_charges']['total_charges']['monetary_value']
+        self.transportation_charges  = attr('ShipmentCharges/TransportationCharges/MonetaryValue')
+        self.service_options_charges = attr('ShipmentCharges/ServiceOptionsCharges/MonetaryValue')
+        self.total_charges           = attr('ShipmentCharges/TotalCharges/MonetaryValue')
 
-        self.billing_weight = data['shipment_results']['billing_weight']['weight']
-        self.billing_weight_unit = data['shipment_results']['billing_weight']['unit_of_measurement']['code']
+        self.billing_weight      = attr('BillingWeight/Weight')
+        self.billing_weight_unit = attr('BillingWeight/UnitOfMeasure/Code')
 
-        if data['shipment_results']['control_log_receipt']
-          self.high_value_report = data['shipment_results']['control_log_receipt']['graphic_image']
-          self.high_value_report_format = data['shipment_results']['control_log_receipt']['image_format']['code']
+        if attr('ControlLogReceipt')
+          self.high_value_report        = attr('ControlLogReceipt/GraphicImage')
+          self.high_value_report_format = attr('ControlLogReceipt/ImageFormat/Code')
         end
 
-        data['shipment_results']['package_results'] = [data['shipment_results']['package_results']] unless data['shipment_results']['package_results'].is_a?(Array)
-        data['shipment_results']['package_results'].each do |package_result|
-          self.packages << {
-            :tracking_number => package_result['tracking_number'],
-            :label_format => package_result['label_image']['label_image_format']['code'],
-            :label => package_result['label_image']['graphic_image'],
-            :html => package_result['label_image']['html_image'],
-            :service_options_charges => package_result['service_options_charges']['monetary_value']
+        xml.search('PackageResults').each do |package_result|
+          package = {
+            :tracking_number         => package_result.at('TrackingNumber').inner_text,
+            :service_options_charges => package_result.at('ServiceOptionsCharges/MonetaryValue').content
           }
+
+          if package_result.at('LabelImage')
+            package[:label_format]     = package_result.at('LabelImage/LabelImageFormat/Code').inner_text.downcase
+            package[:label_image]      = package_result.at('LabelImage/GraphicImage').content
+            package[:label_html_image] = package_result.at('LabelImage/HTMLImage').content
+          end
+
+          self.packages << Package.new(package)
         end
 
       else
-        self.error_severity = data['response']['error']['error_severity']
-        self.error_code = data['response']['error']['error_code']
-        self.error_description = data['response']['error']['error_description']
+        self.error_severity    = attr("ErrorSeverity")
+        self.error_code        = attr("ErrorCode")
+        self.error_description = attr("ErrorDescription")
       end
 
     end

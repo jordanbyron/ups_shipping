@@ -37,20 +37,17 @@ module UpsShipping
   #   }
   #
   class ShipmentConfirmRequest < Request
-    attr_accessor :description
-    attr_accessor :ship_to
-    attr_accessor :service_code
-    attr_accessor :packages
-    attr_accessor :return_service_code
-    attr_accessor :label_format
+    attr_accessor :service_code, :packages, :return_service_code, :label_format,
+      :ship_to, :description, :ship_from
 
     def initialize(data = {})
-      self.description = data[:description]
-      self.ship_to = data[:ship_to]
-      self.service_code = data[:service_code]
-      self.packages = data[:packages] || []
+      self.description         = data[:description]
+      self.ship_to             = data[:ship_to]
+      self.ship_from           = data[:ship_from] || Configuration.ship_from
+      self.service_code        = data[:service_code]
+      self.packages            = data[:packages] || []
       self.return_service_code = data[:return_service_code]
-      self.label_format = data[:label_format] || 'gif'
+      self.label_format        = data[:label_format] || 'gif'
     end
 
     def path_suffix
@@ -84,16 +81,16 @@ module UpsShipping
           end
 
           xml.Shipper do
-            xml.Name Configuration.shipper['name']
-            xml.AttentionName Configuration.shipper['attention_name']
-            xml.PhoneNumber Configuration.shipper['phone_number']
-            xml.ShipperNumber Configuration.account_number
+            xml.Name                Configuration.shipper['name']
+            xml.AttentionName       Configuration.shipper['attention_name']
+            xml.PhoneNumber         Configuration.shipper['phone_number']
+            xml.ShipperNumber       Configuration.account_number
             xml.Address do
-              xml.AddressLine1 Configuration.shipper['address1']
-              xml.City Configuration.shipper['city']
+              xml.AddressLine1      Configuration.shipper['address1']
+              xml.City              Configuration.shipper['city']
               xml.StateProvinceCode Configuration.shipper['state']
-              xml.CountryCode Configuration.shipper['country']
-              xml.PostalCode Configuration.shipper['postal_code']
+              xml.CountryCode       Configuration.shipper['country']
+              xml.PostalCode        Configuration.shipper['postal_code']
             end
           end
 
@@ -101,64 +98,64 @@ module UpsShipping
           if return_service_code
 
             xml.ShipFrom do
-              xml.CompanyName ship_to[:company_name]
-              xml.AttentionName ship_to[:attention_name]
-              xml.PhoneNumber ship_to[:phone_number]
+              xml.CompanyName         ship_to['company_name']
+              xml.AttentionName       ship_to['attention_name']
+              xml.PhoneNumber         ship_to['phone_number']
               xml.Address do
-                xml.AddressLine1 ship_to[:address1]
-                xml.AddressLine2 ship_to[:address2]
-                xml.AddressLine3 ship_to[:address3]
-                xml.City ship_to[:city]
-                xml.StateProvinceCode ship_to[:state]
-                xml.CountryCode ship_to[:country]
-                xml.PostalCode ship_to[:postal_code]
+                xml.AddressLine1      ship_to['address1']
+                xml.AddressLine2      ship_to['address2']
+                xml.AddressLine3      ship_to['address3']
+                xml.City              ship_to['city']
+                xml.StateProvinceCode ship_to['state']
+                xml.CountryCode       ship_to['country']
+                xml.PostalCode        ship_to['postal_code']
               end
             end
 
             xml.ShipTo do
-              xml.CompanyName Configuration.ship_from['company_name']
-              xml.AttentionName Configuration.ship_from['attention_name']
-              xml.PhoneNumber Configuration.ship_from['phone_number']
+              xml.CompanyName         ship_from['company_name']
+              xml.AttentionName       ship_from['attention_name']
+              xml.PhoneNumber         ship_from['phone_number']
               xml.Address do
-                xml.AddressLine1 Configuration.ship_from['address1']
-                xml.AddressLine2 Configuration.ship_from['address2']
-                xml.AddressLine3 Configuration.ship_from['address3']
-                xml.City Configuration.ship_from['city']
-                xml.StateProvinceCode Configuration.ship_from['state']
-                xml.CountryCode Configuration.ship_from['country']
-                xml.PostalCode Configuration.ship_from['postal_code']
+                xml.AddressLine1      ship_from['address1']
+                xml.AddressLine2      ship_from['address2']
+                xml.AddressLine3      ship_from['address3']
+                xml.City              ship_from['city']
+                xml.StateProvinceCode ship_from['state']
+                xml.CountryCode       ship_from['country']
+                xml.PostalCode        ship_from['postal_code']
               end
             end
 
           else
 
             xml.ShipFrom do
-              xml.CompanyName Configuration.ship_from['company_name']
-              xml.AttentionName Configuration.ship_from['attention_name']
-              xml.PhoneNumber Configuration.ship_from['phone_number']
+              xml.CompanyName         ship_from['company_name']
+              xml.AttentionName       ship_from['attention_name']
+              xml.PhoneNumber         ship_from['phone_number']
               xml.Address do
-                xml.AddressLine1 Configuration.ship_from['address1']
-                xml.AddressLine2 Configuration.ship_from['address2']
-                xml.AddressLine3 Configuration.ship_from['address3']
-                xml.City Configuration.ship_from['city']
-                xml.StateProvinceCode Configuration.ship_from['state']
-                xml.CountryCode Configuration.ship_from['country']
-                xml.PostalCode Configuration.ship_from['postal_code']
+                xml.AddressLine1      ship_from['address1']
+                xml.AddressLine2      ship_from['address2']
+                xml.AddressLine3      ship_from['address3']
+                xml.City              ship_from['city']
+                xml.StateProvinceCode ship_from['state']
+                xml.CountryCode       ship_from['country']
+                xml.PostalCode        ship_from['postal_code']
               end
             end
 
             xml.ShipTo do
-              xml.CompanyName ship_to[:company_name]
-              xml.AttentionName ship_to[:attention_name]
-              xml.PhoneNumber ship_to[:phone_number]
+              xml.CompanyName         ship_to['company_name']
+              xml.AttentionName       ship_to['attention_name']
+              xml.PhoneNumber         ship_to['phone_number']
               xml.Address do
-                xml.AddressLine1 ship_to[:address1]
-                xml.AddressLine2 ship_to[:address2]
-                xml.AddressLine3 ship_to[:address3]
-                xml.City ship_to[:city]
-                xml.StateProvinceCode ship_to[:state]
-                xml.CountryCode ship_to[:country]
-                xml.PostalCode ship_to[:postal_code]
+                xml.AddressLine1      ship_to['address1']
+                xml.AddressLine2      ship_to['address2']
+                xml.AddressLine3      ship_to['address3']
+                xml.City              ship_to['city']
+                xml.StateProvinceCode ship_to['state']
+                xml.CountryCode       ship_to['country']
+                xml.PostalCode        ship_to['postal_code']
               end
             end
 
@@ -196,7 +193,7 @@ module UpsShipping
               if package[:description]
                 xml.Description package[:description]
               elsif return_service_code  # Description is required for return service code
-                xml.Description "Video Phone Merchandise"
+                raise "Description is required for return service code"
               end
 
               if package[:packing_type_code]
@@ -229,10 +226,13 @@ module UpsShipping
                 end
               end
 
-              # xml.ReferenceNumber do
-              #   xml.Code
-              #   xml.Value
-              # end
+              if package[:reference_number]
+                xml.ReferenceNumber do
+                  xml.Code  1
+                  xml.Value package[:reference_number]
+                  xml.BarCodeIndicator if package[:barcode]
+                end
+              end
 
               if package[:insured_value]
                 xml.PackageServiceOptions do

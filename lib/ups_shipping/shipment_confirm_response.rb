@@ -1,13 +1,8 @@
 module UpsShipping
   class ShipmentConfirmResponse < Response
-    attr_accessor :transportation_charges
-    attr_accessor :service_options_charges
-    attr_accessor :total_charges
-    attr_accessor :billing_weight
-    attr_accessor :billing_weight_unit
-
-    attr_accessor :shipment_identification_number
-    attr_accessor :shipment_digest
+    attr_accessor :transportation_charges, :service_options_charges,
+      :total_charges, :billing_weight, :billing_weight_unit,
+      :shipment_identification_number, :shipment_digest
 
     def parse_response
       self.xml = Nokogiri::XML.parse(body)
