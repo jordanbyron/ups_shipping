@@ -81,7 +81,7 @@ module UpsShipping
           end
 
           xml.Shipper do
-            xml.Name                Configuration.shipper['name']
+            xml.Name                Configuration.shipper['company_name']
             xml.AttentionName       Configuration.shipper['attention_name']
             xml.PhoneNumber         Configuration.shipper['phone_number']
             xml.ShipperNumber       Configuration.account_number
