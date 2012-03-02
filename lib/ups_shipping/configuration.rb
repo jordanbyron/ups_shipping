@@ -18,8 +18,8 @@ module UpsShipping
       self.shipper               = data['shipper']
       self.ship_from             = data['ship_from']
 
-      data['log'] ||= STDERR
-      self.log = data['log']
+      data['log'] = STDERR if self.log.nil? && data['log'].nil?
+      self.log = data['log'] if data['log']
     end
 
     def load_from_file(filename)

@@ -2,7 +2,7 @@ module UpsShipping
   class ShipmentAcceptResponse < Response
     attr_accessor :transportation_charges, :service_options_charges,
       :total_charges, :billing_weight, :billing_weight_unit, :high_value_report,
-      :high_value_report_format, :packages
+      :high_value_report_format, :shipment_identification_number, :packages
 
     def initialize(body, request = nil)
       self.packages = []
@@ -22,6 +22,8 @@ module UpsShipping
 
         self.billing_weight      = attr('BillingWeight/Weight')
         self.billing_weight_unit = attr('BillingWeight/UnitOfMeasure/Code')
+
+        self.shipment_identification_number = attr('ShipmentIdentificationNumber')
 
         if attr('ControlLogReceipt')
           self.high_value_report        = attr('ControlLogReceipt/GraphicImage')
