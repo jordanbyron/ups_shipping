@@ -5,8 +5,8 @@ require "ups_shipping/version"
 Gem::Specification.new do |s|
   s.name        = "ups_shipping"
   s.version     = UpsShipping::VERSION
-  s.author      = "Ben Hughes"
-  s.email       = "ben@railsgarden.com"
+  s.authors     = ["Ben Hughes", "Jordan Byron"]
+  s.email       = ["ben@railsgarden.com", "jordan.byron@gmail.com"]
   s.homepage    = "http://github.com/rubiety/ups_shipping"
   s.summary     = "A library for using the UPS Shipping XML API."
   s.description = "Provides a Ruby abstraction for the UPS Shipping Services API, which is XML based."
