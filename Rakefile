@@ -12,3 +12,7 @@ Rake::RDocTask.new(:rdoc) do |rdoc|
 end
 
 Dir["#{File.dirname(__FILE__)}/lib/tasks/*.rake"].sort.each { |ext| load ext }
+
+task :environment do
+  require_relative 'lib/ups_shipping'
+end

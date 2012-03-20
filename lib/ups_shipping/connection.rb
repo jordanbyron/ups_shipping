@@ -27,7 +27,6 @@ module UpsShipping
 
     def confirm_shipment(shipment)
       request = ShipmentConfirmRequest.new(shipment)
-
       http_response = http_request(:post, request.request_uri, request.body, request.headers)
       ShipmentConfirmResponse.new(http_response, request)
     end
